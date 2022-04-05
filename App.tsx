@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { Base } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Home from './components/Home.tsx';
 import Pick from './components/Pick.tsx';
@@ -15,7 +15,7 @@ const routeIcons : any = {
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={Base.container}>
         <NavigationContainer>
             <Tab.Navigator screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -33,12 +33,3 @@ export default function App() {
     </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        // backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-  },
-});
