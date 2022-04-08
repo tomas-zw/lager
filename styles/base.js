@@ -7,3 +7,7 @@ export const base = {
     paddingLeft: 12,
     paddingRight: 12,
 };
+
+export const orderButton = {
+    padding: 12,
+};

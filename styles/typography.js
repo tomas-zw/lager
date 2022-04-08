@@ -1,7 +1,7 @@
 export const header1 = {
     fontSize: 42,
     marginBottom: 12,
-    alignSelf: 'center',
+    textAlign: 'center',
 };
 
 export const header2 = {
@@ -12,7 +12,7 @@ export const header2 = {
 export const header3 = {
     fontSize: 28,
     marginBottom: 28,
-    alignSelf: 'center',
+    textAlign: 'center',
 };
 
 export const normal = {

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Typography } from '../styles';
 import productModel from "../models/products.ts";
 
-function StockList() {
-    const [products, setProducts] = useState([]);
+function StockList({products, setProducts}) {
+    // const [products, setProducts] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -24,11 +25,12 @@ function StockList() {
       );
 }
 
-export default function Stock() {
+export default function Stock({products, setProducts}) {
     return (
         <View>
             <Text style={Typography.header3}>Lagerförteckning</Text>
-            <StockList />
+            <StockList products={products} setProducts={setProducts} />
+            {/* <StockList /> */}
         </View>
     );
 }

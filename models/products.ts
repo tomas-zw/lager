@@ -7,7 +7,8 @@ const products = {
         const result = await response.json();
 
         return result.data;
-    }
+    },
+
 };
 
 export default products;

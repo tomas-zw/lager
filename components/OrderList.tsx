@@ -1,9 +1,26 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Button } from "react-native";
+import { Base } from '../styles';
 import orderModel from "../models/orders.ts";
 
-export default function OrderList({ navigation }) {
+export default function OrderList({ route, navigation }) {
+    const { reload } = route.params || false;
     const [allOrders, setAllOrders] = useState([]);
+
+    if (reload) {
+        reloadOrders();
+    }
+
+    async function reloadOrders() {
+        setAllOrders(await orderModel.getOrders());
+    }
+
+    useEffect(() => {
+        reloadOrders();
+    }, []);
+
+
+
 
     useEffect(() => {
         (async () => {
@@ -27,7 +44,7 @@ export default function OrderList({ navigation }) {
         });
 
     return (
-        <View>
+        <View style={Base.orderButton}>
             <Text>Ordrar redo att plockas</Text>
             {listOfOrders}
         </View>

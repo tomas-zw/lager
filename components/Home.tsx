@@ -3,12 +3,13 @@ import { Base, Typography } from '../styles'
 import warehouse from '../assets/warehouse.jpg';
 import Stock from '../components/Stock';
 
-export default function Home() {
+export default function Home({products, setProducts}) {
     return (
         <ScrollView style={Base.base}>
             <Text style={Typography.header1}>Skruv AB</Text>
             <Image source={warehouse} style={{ width: 320, height: 240 }} />
-            <Stock />
+            <Stock products={products} setProducts={setProducts} />
+            {/* <Stock /> */}
         </ScrollView>
     );
 }

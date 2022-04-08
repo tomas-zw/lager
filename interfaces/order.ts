@@ -1,6 +1,6 @@
-import { OrderItem } from './order_item';
+import OrderItem from './order_item';
 
-export interface Order {
+export default interface Order {
     id: number,
     name: string,
     address: string,
