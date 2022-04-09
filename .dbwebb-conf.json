@@ -1,4 +1,4 @@
 {
-    "expo": "exp://exp.host/@toza21/lager?release-channel=default"
+    "expo": "https://expo.dev/@toza21/lager?serviceType=classic&distribution=expo-go"
     "github": "https://github.com/tomas-zw/lager"
 }
