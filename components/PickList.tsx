@@ -1,6 +1,7 @@
 import { View, Text, Button } from "react-native";
 import orderModel from "../models/orders.ts";
 import productModel from "../models/products.ts";
+import OrderItem from '../interfaces/order_item.ts'
 import { Base } from '../styles';
 
 export default function PickList({ route, navigation, setProducts }) {
@@ -14,7 +15,7 @@ export default function PickList({ route, navigation, setProducts }) {
         navigation.navigate("List", { reload: true });
     }
 
-    const orderItemsList = order.order_items.map((item, index: number) => {
+    const orderItemsList = order.order_items.map((item: OrderItem, index: number) => {
         return <Text
                 key={index}
                 >
@@ -22,7 +23,7 @@ export default function PickList({ route, navigation, setProducts }) {
             </Text>;
     });
 
-    let pickOrOutOfStock = order.order_items.map((item, index: number) => {
+    let pickOrOutOfStock = order.order_items.map((item: OrderItem, index: number) => {
         if (item.amount > item.stock) {
             allInStock = false;
             return <Text key={index}>{item.name} out of stock</Text>;

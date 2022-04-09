@@ -1,6 +1,5 @@
-export default interface OrderItem {
+export default interface Product {
     product_id: number,
-    amount: number,
     article_number: string,
     name: string,
     description: string,

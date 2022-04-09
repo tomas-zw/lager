@@ -19,9 +19,6 @@ export default function OrderList({ route, navigation }) {
         reloadOrders();
     }, []);
 
-
-
-
     useEffect(() => {
         (async () => {
             const orders = await orderModel.getOrders();

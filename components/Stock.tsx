@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-// import { useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Typography } from '../styles';
 import productModel from "../models/products.ts";
+import Product from '../interfaces/products'
 
 function StockList({products, setProducts}) {
     // const [products, setProducts] = useState([]);
@@ -14,7 +15,7 @@ function StockList({products, setProducts}) {
         })();
     }, []);
 
-    const list = products.map((product, index) =>
+    const list = products.map((product: Product, index: number) =>
         <Text style={Typography.normal} key={index}>
             { product.name } Antal: { product.stock}</Text>);
 
