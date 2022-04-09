@@ -11,3 +11,7 @@ export const base = {
 export const orderButton = {
     padding: 12,
 };
+
+export const buttonSpace = {
+    marginBottom: 12,
+};

@@ -2,7 +2,7 @@ import { View, Text, Button } from "react-native";
 import orderModel from "../models/orders.ts";
 import productModel from "../models/products.ts";
 import OrderItem from '../interfaces/order_item.ts'
-import { Base } from '../styles';
+import { Base, Typography } from '../styles';
 
 export default function PickList({ route, navigation, setProducts }) {
     const { order } = route.params;
@@ -17,7 +17,7 @@ export default function PickList({ route, navigation, setProducts }) {
 
     const orderItemsList = order.order_items.map((item: OrderItem, index: number) => {
         return <Text
-                key={index}
+                key={index} style={Typography.normal}
                 >
                     {item.name} - {item.amount} - {item.location}
             </Text>;
@@ -26,22 +26,22 @@ export default function PickList({ route, navigation, setProducts }) {
     let pickOrOutOfStock = order.order_items.map((item: OrderItem, index: number) => {
         if (item.amount > item.stock) {
             allInStock = false;
-            return <Text key={index}>{item.name} out of stock</Text>;
+            return <Text key={index} style={Typography.header4}>{item.name} out of stock</Text>;
         };
     });
 
-    // if (outOfStock[0] == null) {
     if (allInStock) {
         pickOrOutOfStock = <Button title="Plocka order" onPress={pick} />;
     };
 
     return (
         <View style={Base.orderButton}>
-            <Text>{order.name}</Text>
-            <Text>{order.address}</Text>
-            <Text>{order.zip} {order.city}</Text>
+            <Text style={Typography.header4}>Kund</Text>
+            <Text style={Typography.normal}>{order.name}</Text>
+            <Text style={Typography.normal}>{order.address}</Text>
+            <Text style={Typography.normal}>{order.zip} {order.city}</Text>
 
-            <Text>Produkter:</Text>
+            <Text style={Typography.header4}>Produkter:</Text>
             {orderItemsList}
 
             {pickOrOutOfStock}

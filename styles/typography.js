@@ -15,6 +15,11 @@ export const header3 = {
     textAlign: 'center',
 };
 
+export const header4 = {
+    fontSize: 22,
+    marginBottom: 8,
+};
+
 export const normal = {
     fontSize: 16,
     marginBottom: 12,
