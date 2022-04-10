@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Button } from "react-native";
-import { Base, Typography } from '../../styles';
+import { Base, Typography } from '../styles';
 // import orderModel from "../models/orders.ts";
 
 export default function DeliveryList({ route, navigation }) {
@@ -42,10 +42,12 @@ export default function DeliveryList({ route, navigation }) {
     //         );
     //     });
 
+    const backButton = <Button title='leverans' onPress={form} />;
+
     return (
         <View style={Base.orderButton}>
             <Text style={Typography.header3}>DELIVERIES LIST</Text>
-            <Button title="leverans" onPress={form} />;
+            { backButton }
         </View>
     );
 };

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Home from './components/Home.tsx';
 import Pick from './components/Pick.tsx';
-// import Delivery from './components/delivery/DeliveryStack.tsx';
+import Delivery from './components/DeliveryStack.tsx';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 const routeIcons : any = {
     'Lager': 'home',
     'Plock': 'list',
-    'Inleverans': 'car'
+    'Leverans': 'car'
 };
 
 export default function App() {
@@ -37,12 +37,12 @@ export default function App() {
                 <Tab.Screen name="Lager">
                     {() => <Home products={products} setProducts={setProducts} />}
                 </Tab.Screen>
-              <Tab.Screen name="Plock">
+                <Tab.Screen name="Plock">
                     {() => <Pick products={products} setProducts={setProducts} />}
                 </Tab.Screen>
-              {/* <Tab.Screen name="Leverans"> */}
-              {/*       {() => <Delivery products={products} setProducts={setProducts} />} */}
-              {/*   </Tab.Screen> */}
+                <Tab.Screen name="Leverans">
+                    {() => <Delivery products={products} setProducts={setProducts} />}
+                </Tab.Screen>
             </Tab.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />
