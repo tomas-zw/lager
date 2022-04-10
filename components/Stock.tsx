@@ -7,6 +7,7 @@ import Product from '../interfaces/products'
 
 function StockList({products, setProducts}) {
     // const [products, setProducts] = useState([]);
+    // console.log('Stock.tsx');
 
     useEffect(() => {
         (async () => {
@@ -31,7 +32,6 @@ export default function Stock({products, setProducts}) {
         <View>
             <Text style={Typography.header3}>Lagerförteckning</Text>
             <StockList products={products} setProducts={setProducts} />
-            {/* <StockList /> */}
         </View>
     );
 }

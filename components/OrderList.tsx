@@ -4,27 +4,32 @@ import { Base, Typography } from '../styles';
 import orderModel from "../models/orders.ts";
 
 export default function OrderList({ route, navigation }) {
+
     const { reload } = route.params || false;
     const [allOrders, setAllOrders] = useState([]);
 
     if (reload) {
         reloadOrders();
-    }
+    };
 
     async function reloadOrders() {
         setAllOrders(await orderModel.getOrders());
-    }
+        navigation.navigate("List", { reload: false });
+        console.log('inne i reloadOrders');
+    };
 
     useEffect(() => {
         reloadOrders();
     }, []);
 
-    useEffect(() => {
-        (async () => {
-            const orders = await orderModel.getOrders();
-            setAllOrders(orders);
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const orders = await orderModel.getOrders();
+    //         setAllOrders(orders);
+    //     })();
+    // }, []);
+
+
 
     const listOfOrders = allOrders
         .filter(order => order.status === "Ny")
@@ -48,4 +53,4 @@ export default function OrderList({ route, navigation }) {
             {listOfOrders}
         </View>
     );
-}
+};

@@ -5,6 +5,8 @@ import OrderItem from '../interfaces/order_item.ts'
 import { Base, Typography } from '../styles';
 
 export default function PickList({ route, navigation, setProducts }) {
+    // console.log('PickList.tsx');
+
     const { order } = route.params;
     let allInStock = true;
 
@@ -13,6 +15,7 @@ export default function PickList({ route, navigation, setProducts }) {
         await orderModel.pickUpdateStock(order);
         setProducts(await productModel.getProducts());
         navigation.navigate("List", { reload: true });
+        // navigation.navigate("List");
     }
 
     const orderItemsList = order.order_items.map((item: OrderItem, index: number) => {

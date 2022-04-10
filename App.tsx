@@ -2,26 +2,25 @@ import { StatusBar } from 'expo-status-bar';
 import { Base } from './styles';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import Home from './components/Home.tsx';
 import Pick from './components/Pick.tsx';
+// import Delivery from './components/delivery/DeliveryStack.tsx';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-// const Tab = createBottomTabNavigator();
-//
-// const routeIcons : any = {
-//     'Lager': 'home',
-//     'Plock': 'list'
-// };
+const Tab = createBottomTabNavigator();
+
+const routeIcons : any = {
+    'Lager': 'home',
+    'Plock': 'list',
+    'Inleverans': 'car'
+};
 
 export default function App() {
     const [products, setProducts] = useState([]);
-    const Tab = createBottomTabNavigator();
-    const routeIcons : any = {
-        'Lager': 'home',
-        'Plock': 'list'
-    };
 
     return (
     <SafeAreaView style={Base.container}>
@@ -35,14 +34,15 @@ export default function App() {
                 tabBarInactiveTintColor: 'gray',
                 headerShown: 'false'
                 })}>
-                {/* <Tab.Screen name="Lager" component={Home} /> */}
                 <Tab.Screen name="Lager">
                     {() => <Home products={products} setProducts={setProducts} />}
                 </Tab.Screen>
-              {/* <Tab.Screen name="Plock" component={Pick} /> */}
               <Tab.Screen name="Plock">
                     {() => <Pick products={products} setProducts={setProducts} />}
                 </Tab.Screen>
+              {/* <Tab.Screen name="Leverans"> */}
+              {/*       {() => <Delivery products={products} setProducts={setProducts} />} */}
+              {/*   </Tab.Screen> */}
             </Tab.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />
