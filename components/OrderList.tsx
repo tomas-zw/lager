@@ -29,8 +29,6 @@ export default function OrderList({ route, navigation }) {
     //     })();
     // }, []);
 
-
-
     const listOfOrders = allOrders
         .filter(order => order.status === "Ny")
         .map((order, index) => {

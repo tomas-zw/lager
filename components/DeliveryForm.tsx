@@ -1,24 +1,20 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Button } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import { Base, Typography } from '../styles';
 // import orderModel from "../models/orders.ts";
 
-export default function DeliveryForm() {
+export default function DeliveryForm({ route, navigation }) {
     console.log('DeliveryForm.tsx');
 
-    // const [allDeliveries, setAllDeliveries] = useState([]);
-    //
-    // useEffect(() => {
-    //     (async () => {
-    //         const orders = await orderModel.getOrders();
-    //         setAllOrders(orders);
-    //     })();
-    // }, []);
+    const [productId, setProductId] = useState('');
+    const [amount, setAmount] = useState('');
+    const [date, setDate] = useState('');
 
-    // useEffect(() => {
-    //     console.log('inne i useeffect');
-    //     reloadOrders();
-    // }, []);
+    function list() {
+        navigation.navigate("List");
+    };
+
+    const goToList = <Button title='Skapa leverans' onPress={list} />;
 
 
     // const listOfOrders = allOrders
@@ -39,7 +35,25 @@ export default function DeliveryForm() {
 
     return (
         <View style={Base.orderButton}>
-            <Text style={Typography.header3}>DELIVERIES FORM</Text>
+            <Text style={Typography.header3}>Gör en leverans </Text>
+            <TextInput
+                style={Base.textInput}
+                onChangeText={setProductId}
+                value={productId}
+                keyboardType="numeric"
+                placeholder='product id'
+            />
+            <TextInput
+                style={Base.textInput}
+                keyboardType='numeric'
+                placeholder='Antal'
+            />
+            <TextInput
+                style={Base.textInput}
+                keyboardType="numeric"
+                placeholder='Datum'
+            />
+            { goToList }
         </View>
     );
 };

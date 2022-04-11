@@ -15,3 +15,16 @@ export const orderButton = {
 export const buttonSpace = {
     marginBottom: 12,
 };
+
+export const textSquare = {
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 5,
+};
+
+export const textInput = {
+    height: 40,
+    margin: 8,
+    borderWidth: 1,
+    padding: 10,
+};
