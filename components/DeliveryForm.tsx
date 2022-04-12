@@ -11,6 +11,7 @@ import deliveryModel from '../models/deliveries'
 import Delivery from '../interfaces/delivery'
 import Product from '../interfaces/products'
 
+
 function DateDropDown(props) {
     const [dropDownDate, setDropDownDate] = useState<Date>(new Date());
     const [show, setShow] = useState<Boolean>(false);
@@ -80,12 +81,12 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
 
     console.log(delivery);
 
-    const goToList = <Button
-        title='Skapa leverans'
-        onPress={ () => {
-            navigation.navigate('List');
-        }}
-        />;
+    // const goToList = <Button
+    //     title='Skapa leverans'
+    //     onPress={ () => {
+    //         navigation.navigate('List');
+    //     }}
+    //     />;
 
     async function makeDelivery() {
         await deliveryModel.addDelivery(delivery);

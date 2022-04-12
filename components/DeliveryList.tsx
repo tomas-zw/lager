@@ -9,8 +9,9 @@ export default function DeliveryList({ route, navigation, deliveries, setDeliver
 
     useEffect(() => {
         (async () => {
-            const allDeliveries = await deliveryModel.getDeliveries();
-            setDeliveries(allDeliveries);
+            setDeliveries(await deliveryModel.getDeliveries());
+            // const allDeliveries = await deliveryModel.getDeliveries();
+            // setDeliveries(allDeliveries);
         })();
     }, []);
 
