@@ -1,5 +1,5 @@
 export default interface Product {
-    product_id: number,
+    id: number,
     article_number: string,
     name: string,
     description: string,

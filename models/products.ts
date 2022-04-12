@@ -21,6 +21,14 @@ const products = {
         });
         console.log(response.status);
     },
+    getOneProduct: async function getOneProduct(productId: number) {
+        const response = await fetch
+            (`${config.base_url}/${productId}?api_key=${config.api_key}`);
+        const result = await response.json();
+
+        return result.data;
+    },
+
 
 };
 

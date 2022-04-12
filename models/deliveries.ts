@@ -1,5 +1,7 @@
 import config from '../config/config.json';
-import Delivery from '../interfaces/delivery'
+import productModel from '../models/products';
+import Delivery from '../interfaces/delivery';
+import Product from '../interfaces/products';
 
 const deliveries = {
     getDeliveries: async function getDeliveries(): Promise<Delivery[]> {
@@ -9,6 +11,31 @@ const deliveries = {
 
     return result.data;
 
+    },
+    addDelivery: async function addDelivery(delivery: Partial<Delivery>) {
+        const newDelivery = { ...delivery };
+        newDelivery['api_key'] = config.api_key;
+        const response = await fetch
+            (`${config.base_url}/deliveries`, {
+                body: JSON.stringify(newDelivery),
+                headers: {
+                  'content-type': 'application/json'
+                },
+                method: 'POST'
+        });
+        const result = await response.json();
+
+        console.log(result.data);
+        return result.data;
+    },
+    updateProduct: async function updateProduct(delivery: Partial<Delivery>, product: Partial<Product>) {
+        const currentProduct = {
+            id: product.id,
+            name: product.name,
+            stock: product.stock + delivery.amount,
+            api_key: config.api_key,
+        };
+        await productModel.updateProduct(currentProduct);
     },
 
 };

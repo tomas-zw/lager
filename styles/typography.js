@@ -24,3 +24,8 @@ export const normal = {
     fontSize: 16,
     marginBottom: 12,
 };
+
+export const label = {
+    fontSize: 16,
+    margin: 2,
+};

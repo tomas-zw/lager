@@ -28,3 +28,4 @@ export const textInput = {
     borderWidth: 1,
     padding: 10,
 };
+

@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
-import { View, Text, Button } from "react-native";
+import { ScrollView, View, Text, Button } from "react-native";
 import { Base, Typography } from '../styles';
 
 import deliveryModel from "../models/deliveries.ts";
 import Delivery from '../interfaces/delivery'
 
 export default function DeliveryList({ route, navigation, deliveries, setDeliveries }) {
-
-    function form() {
-    navigation.navigate("Form");
-    };
 
     useEffect(() => {
         (async () => {
@@ -35,11 +31,19 @@ export default function DeliveryList({ route, navigation, deliveries, setDeliver
             );
         });
 
-    const goToForm = <Button title='Ny leverans' onPress={form} />;
+    const goToForm = <Button
+        title='Ny leverans'
+        onPress={ () => {
+            navigation.navigate('Form');
+        }}
+        />;
 
     return (
-        <View style={Base.orderButton}>
+        <View style={Base.base}>
+            <Text style={Typography.header3}> Leveranser </Text>
+            <ScrollView>
             { listOfDeliveries }
+            </ScrollView>
             { goToForm }
         </View>
     );

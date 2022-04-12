@@ -1,59 +1,140 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button } from "react-native";
-import { Base, Typography } from '../styles';
-// import orderModel from "../models/orders.ts";
+import { ScrollView, View, Text, TextInput, Button, Platform} from "react-native";
+import { Base, Typography, Forms } from '../styles';
 
-export default function DeliveryForm({ route, navigation }) {
-    console.log('DeliveryForm.tsx');
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from "@react-native-picker/picker";
 
-    const [productId, setProductId] = useState('');
-    const [amount, setAmount] = useState('');
-    const [date, setDate] = useState('');
+import productModel from '../models/products'
+import deliveryModel from '../models/deliveries'
 
-    function list() {
-        navigation.navigate("List");
+import Delivery from '../interfaces/delivery'
+import Product from '../interfaces/products'
+
+function DateDropDown(props) {
+    const [dropDownDate, setDropDownDate] = useState<Date>(new Date());
+    const [show, setShow] = useState<Boolean>(false);
+
+    const showDatePicker = () => {
+        setShow(true);
     };
-
-    const goToList = <Button title='Skapa leverans' onPress={list} />;
-
-
-    // const listOfOrders = allOrders
-    //     .filter(order => order.status === "Ny")
-    //     .map((order, index) => {
-    //         return (
-    //             <View key={index} style={Base.buttonSpace}>
-    //             <Button
-    //                 title={order.name}
-    //                 onPress={() => {
-    //                     navigation.navigate('Details', {
-    //                         order: order
-    //                 });
-    //             }} />
-    //             </View>
-    //         );
-    //     });
+    console.log(dropDownDate);
 
     return (
-        <View style={Base.orderButton}>
-            <Text style={Typography.header3}>Gör en leverans </Text>
-            <TextInput
-                style={Base.textInput}
-                onChangeText={setProductId}
-                value={productId}
-                keyboardType="numeric"
-                placeholder='product id'
-            />
-            <TextInput
-                style={Base.textInput}
-                keyboardType='numeric'
-                placeholder='Antal'
-            />
-            <TextInput
-                style={Base.textInput}
-                keyboardType="numeric"
-                placeholder='Datum'
-            />
-            { goToList }
+        <View>
+            {Platform.OS === "android" && (
+                <Button onPress={showDatePicker} title="Visa datumväljare" />
+            )}
+            {(show || Platform.OS === "ios") && (
+                <DateTimePicker
+                    value={dropDownDate}
+                    onChange={(event, date) => {
+                        if (date !== undefined) {
+                            setDropDownDate(date);
+                            props.setDelivery({
+                                ...props.delivery,
+                                delivery_date: date.toLocaleDateString('se-SV'),
+                            });
+                        }
+                        setShow(false);
+                    }}
+                />
+            )}
         </View>
+    );
+}
+
+function ProductDropDown(props) {
+    // const [products, setProducts] = useState<Product[]>([]);
+
+    // useEffect(async () => {
+    //     // setProducts(await productModel.getProducts());
+    //     props.setProducts(await productModel.getProducts());
+    // }, []);
+    let productsHash: any = {};
+
+    const itemsList = props.products.map((prod, index) => {
+        productsHash[prod.id] = prod;
+        return <Picker.Item key={index} label={prod.name} value={prod.id} />;
+    });
+
+    return (
+        <Picker
+            selectedValue={props.delivery?.product_id}
+            onValueChange={(itemValue) => {
+                props.setDelivery(
+                    { ...props.delivery, product_id: itemValue ,
+                        product_name: productsHash[itemValue].name});
+                props.setCurrentProduct(productsHash[itemValue]);
+            }}>
+            {itemsList}
+        </Picker>
+    );
+}
+
+export default function DeliveryForm({ route, navigation, products, setProducts, setDeliveries }) {
+    console.log('DeliveryForm.tsx');
+    const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
+
+    const [delivery, setDelivery] = useState<Partial<Delivery>>({});
+
+    console.log(delivery);
+
+    const goToList = <Button
+        title='Skapa leverans'
+        onPress={ () => {
+            navigation.navigate('List');
+        }}
+        />;
+
+    async function makeDelivery() {
+        await deliveryModel.addDelivery(delivery);
+        await deliveryModel.updateProduct(delivery, currentProduct);
+        setDeliveries(await deliveryModel.getDeliveries());
+        setProducts(await productModel.getProducts());
+        navigation.navigate("List");
+    }
+
+    const makeDeliveryButton = <Button title="skapa leverans" onPress={makeDelivery} />;
+
+    return (
+        <ScrollView style={Base.base}>
+            <Text style={Typography.header3}>Ny leverans </Text>
+            <Text style={Typography.label}>Produkt:</Text>
+                <View style={Forms.pickerInput}>
+                <ProductDropDown
+                    delivery={delivery}
+                    setDelivery={setDelivery}
+                    products={products}
+                    setCurrentProduct={setCurrentProduct}
+                    />
+                </View>
+            <Text style={Typography.label}>Antal:</Text>
+                <TextInput
+                    style={Forms.input}
+                    onChangeText={(content:string) => {
+                        setDelivery({ ...delivery, amount: parseInt(content)})
+                    }}
+                    value={delivery?.amount?.toString()}
+                    keyboardType='numeric'
+                    placeholder='Antal'
+                />
+            <Text style={Typography.label}>Datum:</Text>
+            <DateDropDown
+                delivery={delivery}
+                setDelivery={setDelivery}
+            />
+            <Text style={Typography.label}>Kommmentar:</Text>
+                <TextInput
+                    style={Forms.input}
+                    onChangeText={(content:string) => {
+                        setDelivery({ ...delivery, comment: content})
+                    }}
+                    value={delivery?.comment}
+                    placeholder='Kommentar'
+                />
+            {/* { goToList } */}
+            { makeDeliveryButton }
+        </ScrollView>
     );
 };

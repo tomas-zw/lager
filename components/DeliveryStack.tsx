@@ -14,11 +14,18 @@ export default function Delivery(props) {
     return (
         <Stack.Navigator initialRouteName="List">
             <Stack.Screen name="List">
-                {(screenProps) => <DeliveryList {...screenProps} deliveries={deliveries} setDeliveries={setDeliveries} />}
+                {(screenProps) => <DeliveryList
+                    {...screenProps}
+                    deliveries={deliveries}
+                    setDeliveries={setDeliveries} />}
             </Stack.Screen>
 
             <Stack.Screen name="Form">
-                {(screenProps) => <DeliveryForm {...screenProps} setProducts={props.setProducts} />}
+                {(screenProps) => <DeliveryForm
+                    {...screenProps}
+                    products={props.products}
+                    setProducts={props.setProducts}
+                    setDeliveries={setDeliveries} />}
             </Stack.Screen>
         </Stack.Navigator>
     );
