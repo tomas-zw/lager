@@ -3,55 +3,48 @@ import { Text, ScrollView, Button, View } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 import { DataTable } from "react-native-paper";
 
-import { Base, Typography } from '../../styles'
+import { Base, Typography, Forms } from '../../styles'
 import orderModel from '../../models/orders.ts';
 import Order from '../../interfaces/order';
 
 function InvoiceTable({ invoice, setInvoice, order }) {
     let sum = 0;
 
-    if (order){
-        const table = order.order_items.map((item, index) => {
-            const itemSum = item.amount * item.price;
-            sum += itemSum;
-            return (
-                <DataTable.Row key={index}>
-                  <DataTable.Cell>{item.name}</DataTable.Cell>
-                  <DataTable.Cell>{item.amount}</DataTable.Cell>
-                  <DataTable.Cell>{item.price}</DataTable.Cell>
-                  <DataTable.Cell>{itemSum}</DataTable.Cell>
-                </DataTable.Row>
-            );
-        });
-    // setInvoice({ ...invoice, total_price: sum });
-
+    const table = order.order_items.map((item, index) => {
+        const itemSum = item.amount * item.price;
+        sum += itemSum;
         return (
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title>Produkt</DataTable.Title>
-                    <DataTable.Title>Antal</DataTable.Title>
-                    <DataTable.Title>Pris</DataTable.Title>
-                    <DataTable.Title>Summa</DataTable.Title>
-                </DataTable.Header>
-                {table}
-                <DataTable.Header>
-                    <DataTable.Title>Totalt Pris</DataTable.Title>
-                </DataTable.Header>
-                <DataTable.Row key='sum'>
-                  <DataTable.Cell>{sum}</DataTable.Cell>
-                </DataTable.Row>
-            </DataTable>
+            <DataTable.Row key={index}>
+              <DataTable.Cell>{item.name}</DataTable.Cell>
+              <DataTable.Cell>{item.amount}</DataTable.Cell>
+              <DataTable.Cell>{item.price}</DataTable.Cell>
+              <DataTable.Cell>{itemSum}</DataTable.Cell>
+            </DataTable.Row>
         );
-    }
+    });
 
     return (
-        <Text style={Typography.header1}>inget valt</Text>
-    )
-
+        <DataTable>
+            <DataTable.Header>
+                <DataTable.Title>Produkt</DataTable.Title>
+                <DataTable.Title>Antal</DataTable.Title>
+                <DataTable.Title>Pris</DataTable.Title>
+                <DataTable.Title>Summa</DataTable.Title>
+            </DataTable.Header>
+            {table}
+            <DataTable.Header>
+                <DataTable.Title>Totalt Pris</DataTable.Title>
+            </DataTable.Header>
+            <DataTable.Row key='sum'>
+                <DataTable.Cell>{sum}</DataTable.Cell>
+            </DataTable.Row>
+        </DataTable>
+    );
 }
 
 function ProductDropDown(props) {
     const [allOrders, setAllOrders] = useState([]);
+    let orderHash: any = {};
 
     async function reloadOrders() {
         setAllOrders(await orderModel.getOrders());
@@ -62,10 +55,9 @@ function ProductDropDown(props) {
         reloadOrders();
     }, []);
 
-    let orderHash: any = {};
 
     const orderList = allOrders
-        .filter(order => order.status === "Ny")
+        .filter(order => order.status === "Skickad")
         .map((order, index) => {
         orderHash[order.id] = order;
         return <Picker.Item key={index} label={order.name} value={order.id} />;
@@ -73,12 +65,8 @@ function ProductDropDown(props) {
 
     return (
         <Picker
-            selectedValue={props.invoice?.order_id}
+            selectedValue={props.currentOrder?.id}
             onValueChange={(itemValue) => {
-                props.setInvoice(
-                    { ...props.invoice, order_id: itemValue ,
-                       // total_price : orderHash[itemValue].name});
-                       total_price : 100});
                 props.setCurrentOrder(orderHash[itemValue]);
             }}>
             {orderList}
@@ -93,9 +81,61 @@ export default function Invoices({ setIsLoggedIn, navigation }) {
 
     console.log(invoice);
 
+    useEffect(() => {
+        if (currentOrder) {
+            console.log('use');
+            let sum = 0;
+            currentOrder.order_items.map((item) => {
+                sum += item.amount * item.price;
+            });
+            setInvoice({ ...invoice, total_price: sum, order_id: currentOrder.id });
+        }
+    }, [currentOrder]);
+
+    const isOrder = () => {
+        if (currentOrder) {
+            return (
+                <View>
+                    <Text style={Typography.normal}>{currentOrder.address}</Text>
+                    <Text style={Typography.normal}>{currentOrder.zip} {currentOrder.city}</Text>
+                    <Text style={Typography.normal}>{currentOrder.country}</Text>
+                <InvoiceTable
+                    invoice={invoice}
+                    setInvoice={setInvoice}
+                    order={currentOrder}
+                />
+                </View>
+            );
+        }
+        return (
+            <Text></Text>
+            );
+    }
+
     return (
         <ScrollView style={Base.base}>
-            <Text style={Typography.header1}>Fakturor</Text>
+            <Text style={Typography.header1}>Order</Text>
+
+            <View style={Forms.pickerInput}>
+                <ProductDropDown
+                    invoice={invoice}
+                    setInvoice={setInvoice}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
+            </View>
+
+            { isOrder() }
+
+            <View style={Base.buttonSpace}>
+                <Button
+                    title='Skapa faktura'
+                    onPress={() => {
+                        setIsLoggedIn(false);
+                    }}
+                />
+            </View>
+
             <View style={Base.buttonSpace}>
                 <Button
                     title='Logga ut'
@@ -105,21 +145,6 @@ export default function Invoices({ setIsLoggedIn, navigation }) {
                 />
             </View>
 
-            <ProductDropDown
-                invoice={invoice}
-                setInvoice={setInvoice}
-                currentOrder={currentOrder}
-                setCurrentOrder={setCurrentOrder}
-            />
-
-            <InvoiceTable
-                invoice={invoice}
-                setInvoice={setInvoice}
-                order={currentOrder}
-            />
-
         </ScrollView>
     );
-}
-
-
+};
