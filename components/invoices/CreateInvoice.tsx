@@ -5,6 +5,7 @@ import { DataTable } from "react-native-paper";
 
 import { Base, Typography, Forms } from '../../styles'
 import orderModel from '../../models/orders.ts';
+import invoiceModel from '../../models/invoices';
 import Order from '../../interfaces/order';
 
 function InvoiceTable({ invoice, setInvoice, order }) {
@@ -88,7 +89,11 @@ export default function Invoices({ setIsLoggedIn, navigation }) {
             currentOrder.order_items.map((item) => {
                 sum += item.amount * item.price;
             });
-            setInvoice({ ...invoice, total_price: sum, order_id: currentOrder.id });
+            setInvoice({ ...invoice,
+                total_price: sum,
+                order_id: currentOrder.id,
+                name: currentOrder.name
+            });
         }
     }, [currentOrder]);
 
@@ -131,16 +136,8 @@ export default function Invoices({ setIsLoggedIn, navigation }) {
                 <Button
                     title='Skapa faktura'
                     onPress={() => {
-                        setIsLoggedIn(false);
-                    }}
-                />
-            </View>
-
-            <View style={Base.buttonSpace}>
-                <Button
-                    title='Logga ut'
-                    onPress={() => {
-                        setIsLoggedIn(false);
+                        invoiceModel.addInvoice(invoice);
+                        navigation.navigate('Fakturor', { reload: true});
                     }}
                 />
             </View>

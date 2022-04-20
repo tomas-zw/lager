@@ -6,12 +6,24 @@ import { Base, Typography } from '../../styles'
 import invoiceModel from "../../models/invoices";
 import Invoice from '../../interfaces/invoice';
 
-export default function AllInvoices({ navigation, setIsLoggedIn }) {
+export default function AllInvoices({route, navigation, setIsLoggedIn }) {
     // console.log('Home.tsx');
+    const { reload } = route.params || false;
     const [invoices, setInvoices] = useState<Partial<Invoice[]>>([]);
 
-    useEffect(async () => {
-      setInvoices(await invoiceModel.getInvoices());
+    if (reload) {
+        console.log('reload');
+        reloadInvoices();
+        navigation.navigate('Fakturor', { reload: false })
+    };
+
+    async function reloadInvoices() {
+        setInvoices(await invoiceModel.getInvoices());
+        // navigation.navigate("List", { reload: false });
+    };
+
+    useEffect(() => {
+        reloadInvoices();
     }, []);
 
     console.log(invoices);
@@ -48,12 +60,13 @@ export default function AllInvoices({ navigation, setIsLoggedIn }) {
 
             <View style={Base.buttonSpace}>
                 <Button
-                    title='Skapa faktura'
+                    title='Ny faktura'
                     onPress={() => {
                         navigation.navigate('Skapa');
                     }}
                 />
             </View>
+
             <View style={Base.buttonSpace}>
                 <Button
                     title='Logga ut'
