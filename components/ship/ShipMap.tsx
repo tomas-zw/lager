@@ -1,5 +1,6 @@
 import { ScrollView, View, Text, Button } from "react-native";
 import { DataTable } from "react-native-paper";
+import MapView, { Marker } from "react-native-maps";
 
 import { Base, Typography } from '../../styles';
 
@@ -36,6 +37,21 @@ export default function ShipMap({ route, navigation }) {
                 </DataTable.Header>
                     { list }
             </DataTable>
+            <View style={Base.mapContainer}>
+                <MapView
+                    style={Base.map}
+                    initialRegion={{
+                        latitude: 56.1612,
+                        longitude: 15.5869,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
+                    }}>
+                    <Marker
+                        coordinate={{ latitude: 56.17, longitude: 15.59 }}
+                        title={order.address}
+                    />
+                    </MapView>
+            </View>
         </View>
     );
 

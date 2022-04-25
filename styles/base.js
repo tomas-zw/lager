@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export const container = {
     flex: 1,
 };
@@ -33,3 +35,8 @@ export const map = {
     ...StyleSheet.absoluteFillObject,
 };
 
+export const mapContainer = {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+};
