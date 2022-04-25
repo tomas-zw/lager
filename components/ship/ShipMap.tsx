@@ -1,13 +1,49 @@
+import { useState, useEffect} from 'react';
 import { ScrollView, View, Text, Button } from "react-native";
 import { DataTable } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
+import * as Location from 'expo-location';
 
 import { Base, Typography } from '../../styles';
+import getCoordinates from '../../models/nominatim';
 
 
-export default function ShipMap({ route, navigation }) {
+export default function ShipMap({ route }) {
     const { order } = route.params;
+    const [marker, setMarker] = useState(null);
+    const [locationMarker, setLocationMarker] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
+    useEffect(() => {
+        (async () => {
+            const results = await getCoordinates(`${order.address}, ${order.city}`);
+            setMarker(<Marker
+                coordinate={{ latitude: parseFloat(results[0].lat), longitude: parseFloat(results[0].lon) }}
+                title={order.address}
+            />);
+        })();
+    }, []);
+    useEffect(() => {
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+
+            if (status !== 'granted') {
+                setErrorMessage('Permission to access location was denied');
+                return;
+            }
+
+            const currentLocation = await Location.getCurrentPositionAsync({});
+
+            setLocationMarker(<Marker
+                coordinate={{
+                    latitude: currentLocation.coords.latitude,
+                    longitude: currentLocation.coords.longitude
+                }}
+                title="Min plats"
+                pinColor="blue"
+            />);
+        })();
+    }, []);
     const list = order.order_items.map((item, index) => {
         return (
             <DataTable.Row key={index}>
@@ -37,6 +73,7 @@ export default function ShipMap({ route, navigation }) {
                 </DataTable.Header>
                     { list }
             </DataTable>
+            <Text style={Typography.normal}> { errorMessage }</Text>
             <View style={Base.mapContainer}>
                 <MapView
                     style={Base.map}
@@ -46,10 +83,8 @@ export default function ShipMap({ route, navigation }) {
                         latitudeDelta: 0.1,
                         longitudeDelta: 0.1,
                     }}>
-                    <Marker
-                        coordinate={{ latitude: 56.17, longitude: 15.59 }}
-                        title={order.address}
-                    />
+                    { marker }
+                    { locationMarker }
                     </MapView>
             </View>
         </View>

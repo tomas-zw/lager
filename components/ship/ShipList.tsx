@@ -32,10 +32,10 @@ export default function ShipList({ route, navigation }) {
     });
 
     return (
-        <View style={Base.base}>
+        <ScrollView style={Base.base}>
             <Text style={Typography.header3}> Packade ordrar </Text>
             { packedOrders }
-        </View>
+        </ScrollView>
     );
 
 };
