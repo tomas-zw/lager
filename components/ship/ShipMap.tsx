@@ -8,11 +8,18 @@ import { Base, Typography } from '../../styles';
 import getCoordinates from '../../models/nominatim';
 
 
-export default function ShipMap({ route }) {
+export default function ShipMap({ route}) {
     const { order } = route.params;
     const [marker, setMarker] = useState(null);
+    const [shipmentRegion, setShipmentRegion] = useState({
+        latitude: 60.128161,
+        longitude: 15.5869,
+        latitudeDelta: 10,
+        longitudeDelta: 0.1,
+    })
     const [locationMarker, setLocationMarker] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+
 
     useEffect(() => {
         (async () => {
@@ -20,7 +27,15 @@ export default function ShipMap({ route }) {
             setMarker(<Marker
                 coordinate={{ latitude: parseFloat(results[0].lat), longitude: parseFloat(results[0].lon) }}
                 title={order.address}
-            />);
+                />);
+
+            setShipmentRegion({
+                latitude: parseFloat(results[0].lat),
+                longitude: parseFloat(results[0].lon),
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+
+            })
         })();
     }, []);
     useEffect(() => {
@@ -77,12 +92,7 @@ export default function ShipMap({ route }) {
             <View style={Base.mapContainer}>
                 <MapView
                     style={Base.map}
-                    initialRegion={{
-                        latitude: 56.1612,
-                        longitude: 15.5869,
-                        latitudeDelta: 0.1,
-                        longitudeDelta: 0.1,
-                    }}>
+                    initialRegion={ shipmentRegion }>
                     { marker }
                     { locationMarker }
                     </MapView>
