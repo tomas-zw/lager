@@ -29,3 +29,7 @@ export const textInput = {
     padding: 10,
 };
 
+export const map = {
+    ...StyleSheet.absoluteFillObject,
+};
+

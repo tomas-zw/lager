@@ -8,6 +8,7 @@ import Pick from './components/Pick.tsx';
 import Delivery from './components/DeliveryStack.tsx';
 import Auth from './components/auth/Auth';
 import Invoices from './components/invoices/InvoiceStack';
+import Ship from './components/ship/ShipStack';
 
 import authModel from './models/auth'
 
@@ -22,7 +23,8 @@ const routeIcons : any = {
     'Plock': 'list',
     'Leverans': 'car',
     'Logga in': 'log-in',
-    'Faktura': 'md-newspaper'
+    'Faktura': 'md-newspaper',
+    'Karta': 'map'
 };
 
 export default function App() {
@@ -62,6 +64,7 @@ export default function App() {
                     {() => <Auth setIsLoggedIn={setIsLoggedIn} />}
                   </Tab.Screen>
                 }
+                 <Tab.Screen name="Karta" component={Ship} />
             </Tab.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />
