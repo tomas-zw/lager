@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Base } from './styles';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FlashMessage from 'react-native-flash-message';
 
 import Home from './components/Home.tsx';
 import Pick from './components/Pick.tsx';
@@ -68,9 +69,8 @@ export default function App() {
             </Tab.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />
+        <FlashMessage position="top" />
     </SafeAreaView>
     );
 }
 
-
-                  // <Tab.Screen name="Faktura" component={Invoices} /> :
