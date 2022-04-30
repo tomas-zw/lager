@@ -10,6 +10,7 @@ import deliveryModel from '../models/deliveries'
 
 import Delivery from '../interfaces/delivery'
 import Product from '../interfaces/products'
+import { showMessage } from 'react-native-flash-message';
 
 
 function DateDropDown(props) {
@@ -89,7 +90,12 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
     //     />;
 
     async function makeDelivery() {
-        await deliveryModel.addDelivery(delivery);
+        const result = await deliveryModel.addDelivery(delivery);
+        showMessage({
+            message: result.title,
+            description: result.message,
+            type: result.type
+        })
         await deliveryModel.updateProduct(delivery, currentProduct);
         setDeliveries(await deliveryModel.getDeliveries());
         setProducts(await productModel.getProducts());

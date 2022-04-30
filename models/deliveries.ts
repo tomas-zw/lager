@@ -25,8 +25,22 @@ const deliveries = {
         });
         const result = await response.json();
 
-        console.log(result.data);
-        return result.data;
+        if (Object.prototype.hasOwnProperty.call(result, 'errors')) {
+            return {
+                title: result.errors.title,
+                message: result.errors.detail,
+                type: "danger",
+            };
+        }
+
+        return {
+            title: "leverans",
+            message: `${result.data.amount} : ${result.data.product_name}`,
+            type: "success",
+        };
+
+        // console.log(result.data);
+        // return result.data;
     },
     updateProduct: async function updateProduct(delivery: Partial<Delivery>, product: Partial<Product>) {
         const currentProduct = {
