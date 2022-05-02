@@ -55,6 +55,7 @@ function ProductDropDown(props) {
     // }, []);
     let productsHash: any = {};
 
+
     const itemsList = props.products.map((prod, index) => {
         productsHash[prod.id] = prod;
         return <Picker.Item key={index} label={prod.name} value={prod.id} />;
@@ -80,26 +81,49 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
 
     const [delivery, setDelivery] = useState<Partial<Delivery>>({});
 
-    console.log(delivery);
+    function amountIsValid(amount: string) {
+        if (!(parseInt(amount) > 0)) {
+            showMessage({
+                message: "Antal ej giltig",
+                description: "Antal måste vara större än 0",
+                type: "warning"
+            })
+        }
+    };
 
-    // const goToList = <Button
-    //     title='Skapa leverans'
-    //     onPress={ () => {
-    //         navigation.navigate('List');
-    //     }}
-    //     />;
+    function formIsValid() {
+        if (Object.prototype.hasOwnProperty.call(delivery, 'product_id')
+            && Object.prototype.hasOwnProperty.call(delivery, 'amount')
+            && Object.prototype.hasOwnProperty.call(delivery, 'delivery_date'))  {
+
+            return true;
+        }
+            return false;
+    };
+
+
 
     async function makeDelivery() {
-        const result = await deliveryModel.addDelivery(delivery);
-        showMessage({
-            message: result.title,
-            description: result.message,
-            type: result.type
-        })
-        await deliveryModel.updateProduct(delivery, currentProduct);
-        setDeliveries(await deliveryModel.getDeliveries());
-        setProducts(await productModel.getProducts());
-        navigation.navigate("List");
+        if (formIsValid()) {
+            const result = await deliveryModel.addDelivery(delivery);
+            showMessage({
+                message: result.title,
+                description: result.message,
+                type: result.type
+            })
+            await deliveryModel.updateProduct(delivery, currentProduct);
+            setDeliveries(await deliveryModel.getDeliveries());
+            setProducts(await productModel.getProducts());
+            navigation.navigate("List");
+        } else {
+            console.log(delivery);
+            showMessage({
+                message: "Fält saknas",
+                description: "Produkt, antal och datum måsta vara valda",
+                type: "warning"
+            })
+
+        };
     }
 
     const makeDeliveryButton = <Button title="skapa leverans" onPress={makeDelivery} />;
@@ -120,6 +144,7 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
                 <TextInput
                     style={Forms.input}
                     onChangeText={(content:string) => {
+                        amountIsValid(content);
                         setDelivery({ ...delivery, amount: parseInt(content)})
                     }}
                     value={delivery?.amount?.toString()}
