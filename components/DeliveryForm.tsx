@@ -3,7 +3,8 @@ import { ScrollView, View, Text, TextInput, Button, Platform} from "react-native
 import { Base, Typography, Forms } from '../styles';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from "@react-native-picker/picker";
+// import { Picker } from "@react-native-picker/picker";
+import DeliveryProductDropDown from './DeliveryProductDropDown';
 
 import productModel from '../models/products'
 import deliveryModel from '../models/deliveries'
@@ -46,6 +47,7 @@ function DateDropDown(props) {
     );
 }
 
+/*
 function ProductDropDown(props) {
     // const [products, setProducts] = useState<Product[]>([]);
 
@@ -74,6 +76,7 @@ function ProductDropDown(props) {
         </Picker>
     );
 }
+*/
 
 export default function DeliveryForm({ route, navigation, products, setProducts, setDeliveries }) {
     console.log('DeliveryForm.tsx');
@@ -100,7 +103,6 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
         }
             return false;
     };
-
 
 
     async function makeDelivery() {
@@ -133,7 +135,7 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
             <Text style={Typography.header3}>Ny leverans </Text>
             <Text style={Typography.label}>Produkt:</Text>
                 <View style={Forms.pickerInput}>
-                <ProductDropDown
+                <DeliveryProductDropDown
                     delivery={delivery}
                     setDelivery={setDelivery}
                     products={products}
