@@ -9,3 +9,31 @@ test('header should exist containing text Ny leverans', async () => {
 
     expect(header).toBeDefined();
 });
+
+test('label should exist containing text Produkt:', async () => {
+    const { getByText } = render(<DeliveryForm />);
+    const label = await getByText('Produkt:');
+
+    expect(label).toBeDefined();
+});
+
+test('label should exist containing text Antal:', async () => {
+    const { getByText } = render(<DeliveryForm />);
+    const label = await getByText('Antal:');
+
+    expect(label).toBeDefined();
+});
+
+test('label should exist containing text Kommentar:', async () => {
+    const { getByText } = render(<DeliveryForm />);
+    const label = await getByText('Kommentar:');
+
+    expect(label).toBeDefined();
+});
+
+test('label should exist containing text Datum:', async () => {
+    const { getByText } = render(<DeliveryForm />);
+    const label = await getByText('Datum:');
+
+    expect(label).toBeDefined();
+});

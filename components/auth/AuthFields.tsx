@@ -31,6 +31,7 @@ export default function AuthFields({ auth, setAuth, title, submit, navigation}) 
                         submit();
                         navigation.navigate("Lager");
                     }}
+                    testID="delivery-button"
                 />
             </View>
             <View style={Base.buttonSpace}>

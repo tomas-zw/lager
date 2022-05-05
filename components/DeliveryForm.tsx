@@ -21,7 +21,7 @@ function DateDropDown(props) {
     const showDatePicker = () => {
         setShow(true);
     };
-    console.log(dropDownDate);
+    // console.log(dropDownDate);
 
     return (
         <View>
@@ -79,7 +79,7 @@ function ProductDropDown(props) {
 */
 
 export default function DeliveryForm({ route, navigation, products, setProducts, setDeliveries }) {
-    console.log('DeliveryForm.tsx');
+    // console.log('DeliveryForm.tsx');
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
 
     const [delivery, setDelivery] = useState<Partial<Delivery>>({});
@@ -118,7 +118,7 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
             setProducts(await productModel.getProducts());
             navigation.navigate("List");
         } else {
-            console.log(delivery);
+            // console.log(delivery);
             showMessage({
                 message: "Fält saknas",
                 description: "Produkt, antal och datum måsta vara valda",
@@ -158,7 +158,7 @@ export default function DeliveryForm({ route, navigation, products, setProducts,
                 delivery={delivery}
                 setDelivery={setDelivery}
             />
-            <Text style={Typography.label}>Kommmentar:</Text>
+            <Text style={Typography.label}>Kommentar:</Text>
                 <TextInput
                     style={Forms.input}
                     onChangeText={(content:string) => {
